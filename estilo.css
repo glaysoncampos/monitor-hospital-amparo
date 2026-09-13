@@ -1,13 +1,18 @@
 :root {
   --vinho: #7A0C0D;
   --vinho-escuro: #5A0909;
+  --vinho-suave: rgba(122, 12, 13, 0.08);
   --grafite: #1A1A1A;
   --cinza: #5A5A5A;
   --cinza-claro: #F4F4F4;
+  --cinza-borda: #E5E5E5;
   --branco: #FFFFFF;
   --alerta: #D97706;
+  --alerta-suave: rgba(217, 119, 6, 0.10);
   --sucesso: #16A34A;
+  --sucesso-suave: rgba(22, 163, 74, 0.10);
   --info: #2563EB;
+  --info-suave: rgba(37, 99, 235, 0.10);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -19,22 +24,105 @@ body {
   line-height: 1.5;
 }
 
+/* CABEÇALHO */
 header {
   background: var(--vinho);
   color: var(--branco);
   padding: 24px 20px;
 }
 
-header h1 { font-size: 1.5rem; }
-header p { font-size: 0.9rem; opacity: 0.9; margin-top: 4px; }
+header h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
 
+header p {
+  font-size: 0.9rem;
+  opacity: 0.9;
+  margin-top: 4px;
+}
+
+/* CONTAINER PRINCIPAL */
 main {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 24px 20px;
 }
 
+/* CARDS GENÉRICOS (blocos brancos com sombra) */
+.card {
+  background: var(--branco);
+  border-radius: 8px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--cinza-borda);
+  margin-bottom: 20px;
+}
+
+.card h2 {
+  font-size: 1rem;
+  color: var(--cinza);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+/* GRID DE KPIs (cards de número) */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.kpi {
+  background: var(--branco);
+  border-radius: 8px;
+  padding: 20px;
+  border: 1px solid var(--cinza-borda);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.kpi-label {
+  font-size: 0.75rem;
+  color: var(--cinza);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.kpi-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--vinho);
+  line-height: 1.1;
+}
+
+.kpi-value.alerta { color: var(--alerta); }
+.kpi-value.sucesso { color: var(--sucesso); }
+.kpi-value.info { color: var(--info); }
+
+.kpi-desc {
+  font-size: 0.8rem;
+  color: var(--cinza);
+  margin-top: 6px;
+}
+
+/* KPI DESTAQUE (o card vinho) */
+.kpi.destaque {
+  background: var(--vinho);
+  border-color: var(--vinho);
+}
+
+.kpi.destaque .kpi-label { color: rgba(255, 255, 255, 0.8); }
+.kpi.destaque .kpi-value { color: var(--branco); }
+.kpi.destaque .kpi-desc { color: rgba(255, 255, 255, 0.8); }
+
+/* RESPONSIVO (celular) */
 @media (max-width: 768px) {
   header h1 { font-size: 1.2rem; }
   main { padding: 12px; }
+  .kpi-value { font-size: 1.6rem; }
+  .card { padding: 16px; }
 }
