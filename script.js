@@ -76,3 +76,116 @@ async function carregarDados() {
 }
 
 document.addEventListener("DOMContentLoaded", carregarDados);
+// ============================================================
+// GRÁFICOS — leem da aba "competencias" da planilha
+// ============================================================
+
+const URL_COMPETENCIAS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT5FfiU8KTcOhODPVFs281zU8BEknbto_VScPM82-X7vfsJq8iHyV3dteiTGze0Y7zRnTTV9ZBc8SuN/pub?gid=1057235421&single=true&output=csv";
+
+// Cores da paleta JAVA
+const CORES = {
+  vinho: "#7A0C0D",
+  vinhoClaro: "rgba(122, 12, 13, 0.15)",
+  alerta: "#D97706",
+  alertaClaro: "rgba(217, 119, 6, 0.15)",
+  sucesso: "#16A34A",
+  sucessoClaro: "rgba(22, 163, 74, 0.15)",
+  info: "#2563EB",
+  infoClaro: "rgba(37, 99, 235, 0.15)",
+  cinza: "#5A5A5A"
+};
+
+// Converte número (vírgula → ponto) com segurança
+function numeroBR(valor) {
+  if (!valor || valor === "") return 0;
+  return parseFloat(valor.replace(",", ".")) || 0;
+}
+
+// Desenha um gráfico genérico
+function criarGrafico(canvasId, tipo, labels, dados, cor, corFundo, sufixo = "") {
+  const ctx = document.getElementById(canvasId);
+  if (!ctx) return;
+  new Chart(ctx, {
+    type: tipo,
+    data: {
+      labels: labels,
+      datasets: [{
+        data: dados,
+        backgroundColor: corFundo,
+        borderColor: cor,
+        borderWidth: 2,
+        tension: 0.3,
+        fill: tipo === "line"
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: (context) => {
+              const v = context.parsed.y ?? context.parsed;
+              return v.toLocaleString("pt-BR") + sufixo;
+            }
+          }
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            callback: (v) => v.toLocaleString("pt-BR") + sufixo
+          }
+        }
+      }
+    }
+  });
+}
+
+// Carrega os dados e cria os 4 gráficos
+async function carregarGraficos() {
+  try {
+    const resposta = await fetch(URL_COMPETENCIAS);
+    const texto = await resposta.text();
+    const linhas = parseCSV(texto);
+
+    // Eixo X = meses formatados
+    const labels = linhas.map(l => {
+      const [ano, mes] = (l.mes || "").split("-");
+      const nomes = ["jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"];
+      return `${nomes[parseInt(mes)-1]}/${ano.slice(2)}`;
+    });
+
+    // Gráfico 1 — Glosa IPASGO (%)
+    criarGrafico("g1", "line", labels,
+      linhas.map(l => numeroBR(l.glosa_ipasgo_pct)),
+      CORES.alerta, CORES.alertaClaro, "%");
+
+    // Gráfico 2 — Glosa Total Identificada (R$)
+    criarGrafico("g2", "bar", labels,
+      linhas.map(l => numeroBR(l.glosa_total_identificada)),
+      CORES.vinho, CORES.vinhoClaro);
+
+    // Gráfico 3 — Contas Paradas (quantidade)
+    criarGrafico("g3", "line", labels,
+      linhas.map(l => numeroBR(l.contas_paradas_qtd)),
+      CORES.info, CORES.infoClaro);
+
+    // Gráfico 4 — Valor Represado (R$)
+    criarGrafico("g4", "bar", labels,
+      linhas.map(l => numeroBR(l.valor_represado)),
+      CORES.sucesso, CORES.sucessoClaro);
+
+    console.log("Gráficos criados com sucesso.");
+  } catch (erro) {
+    console.error("Erro ao carregar gráficos:", erro);
+  }
+}
+
+// Dispara a criação dos gráficos depois dos itens
+document.addEventListener("DOMContentLoaded", () => {
+  // Espera um pouquinho pra garantir que o Chart.js já carregou
+  setTimeout(carregarGraficos, 500);
+});
