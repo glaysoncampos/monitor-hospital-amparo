@@ -5,20 +5,93 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Monitor de Indicadores — Hospital Amparo</title>
   <link rel="stylesheet" href="estilo.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
   <header>
     <h1>Monitor de Indicadores do Ciclo da Receita</h1>
-    <p>Hospital e Maternidade Amparo</p>
+    <p>Hospital e Maternidade Amparo · Diagnóstico Condensado — 11 Itens</p>
   </header>
 
   <main>
-    <section class="card">
-      <h2>Painel em construção</h2>
-      <p>Os indicadores do diagnóstico serão carregados aqui na próxima etapa.</p>
+
+    <!-- KPIs -->
+    <section class="kpi-grid">
+      <div class="kpi destaque">
+        <div class="kpi-label">Itens Mapeados</div>
+        <div class="kpi-value">11</div>
+        <div class="kpi-desc">Diagnóstico completo</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Valor Identificado</div>
+        <div class="kpi-value">R$ 415,8 mil</div>
+        <div class="kpi-desc">Soma dos valores apurados</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Glosas Identificadas</div>
+        <div class="kpi-value alerta">R$ 222,4 mil</div>
+        <div class="kpi-desc">Itens 2, 3, 6 e 7</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Valor Represado</div>
+        <div class="kpi-value sucesso">R$ 52 mil</div>
+        <div class="kpi-desc">67 contas paradas</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Contas Paradas</div>
+        <div class="kpi-value info">67</div>
+        <div class="kpi-desc">No pré-faturamento</div>
+      </div>
     </section>
+
+    <!-- GRÁFICOS -->
+    <section class="grafico-grid">
+      <div class="grafico-card">
+        <h3>Glosa IPASGO — % sobre apresentado</h3>
+        <div class="grafico-wrapper"><canvas id="g1"></canvas></div>
+      </div>
+      <div class="grafico-card">
+        <h3>Glosa Total Identificada (R$)</h3>
+        <div class="grafico-wrapper"><canvas id="g2"></canvas></div>
+      </div>
+      <div class="grafico-card">
+        <h3>Contas Paradas no Pré-Faturamento</h3>
+        <div class="grafico-wrapper"><canvas id="g3"></canvas></div>
+      </div>
+      <div class="grafico-card">
+        <h3>Valor Represado (R$)</h3>
+        <div class="grafico-wrapper"><canvas id="g4"></canvas></div>
+      </div>
+    </section>
+
+    <!-- TABELA -->
+    <section class="card">
+      <h2>Detalhamento dos 11 Itens</h2>
+      <div class="tabela-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Item</th>
+              <th>Valor</th>
+              <th>Classificação</th>
+              <th>Setor</th>
+            </tr>
+          </thead>
+          <tbody id="corpo-tabela">
+            <tr><td colspan="5">Carregando itens...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
   </main>
+
+  <footer>
+    <p>JAVA Treinamentos · Diagnóstico Condensado — Hospital Amparo</p>
+    <p>Data de corte: 12/09/2026 · Versão 1.0</p>
+  </footer>
 
 </body>
 </html>
