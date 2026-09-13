@@ -126,3 +126,106 @@ main {
   .kpi-value { font-size: 1.6rem; }
   .card { padding: 16px; }
 }
+/* TABELA */
+.tabela-wrapper {
+  overflow-x: auto;
+  border-radius: 8px;
+  border: 1px solid var(--cinza-borda);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  background: var(--branco);
+}
+
+thead {
+  background: var(--vinho);
+  color: var(--branco);
+}
+
+thead th {
+  padding: 12px 14px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+tbody tr {
+  border-bottom: 1px solid var(--cinza-borda);
+}
+
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: var(--cinza-claro); }
+
+tbody td {
+  padding: 12px 14px;
+  color: var(--grafite);
+  vertical-align: middle;
+}
+
+/* BADGES (etiquetas de status) */
+.badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.badge-glosa     { background: var(--alerta-suave);  color: var(--alerta); }
+.badge-estimativa { background: var(--info-suave);    color: var(--info); }
+.badge-represado  { background: var(--sucesso-suave); color: var(--sucesso); }
+.badge-passivo    { background: rgba(122, 12, 13, 0.10); color: var(--vinho); }
+.badge-neutro     { background: var(--cinza-claro);   color: var(--cinza); }
+
+/* GRÁFICOS */
+.grafico-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.grafico-card {
+  background: var(--branco);
+  border-radius: 8px;
+  padding: 20px;
+  border: 1px solid var(--cinza-borda);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.grafico-card h3 {
+  font-size: 0.85rem;
+  color: var(--cinza);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 14px;
+  font-weight: 600;
+}
+
+.grafico-wrapper {
+  position: relative;
+  height: 220px;
+}
+
+/* RODAPÉ */
+footer {
+  text-align: center;
+  padding: 24px 20px;
+  color: var(--cinza);
+  font-size: 0.8rem;
+  border-top: 1px solid var(--cinza-borda);
+  margin-top: 24px;
+}
+
+/* RESPONSIVO EXTRA */
+@media (max-width: 768px) {
+  .grafico-grid { grid-template-columns: 1fr; }
+  .grafico-wrapper { height: 200px; }
+  thead th, tbody td { padding: 10px 8px; font-size: 0.8rem; }
+}
