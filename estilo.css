@@ -1,0 +1,40 @@
+:root {
+  --vinho: #7A0C0D;
+  --vinho-escuro: #5A0909;
+  --grafite: #1A1A1A;
+  --cinza: #5A5A5A;
+  --cinza-claro: #F4F4F4;
+  --branco: #FFFFFF;
+  --alerta: #D97706;
+  --sucesso: #16A34A;
+  --info: #2563EB;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  background: var(--cinza-claro);
+  color: var(--grafite);
+  line-height: 1.5;
+}
+
+header {
+  background: var(--vinho);
+  color: var(--branco);
+  padding: 24px 20px;
+}
+
+header h1 { font-size: 1.5rem; }
+header p { font-size: 0.9rem; opacity: 0.9; margin-top: 4px; }
+
+main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+@media (max-width: 768px) {
+  header h1 { font-size: 1.2rem; }
+  main { padding: 12px; }
+}
