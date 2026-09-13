@@ -98,7 +98,17 @@ const CORES = {
 // Converte número (vírgula → ponto) com segurança
 function numeroBR(valor) {
   if (!valor || valor === "") return 0;
-  return parseFloat(valor.replace(",", ".")) || 0;
+  // Remove aspas, troca vírgula por ponto
+  const limpo = String(valor).replace(/"/g, "").replace(",", ".");
+  return parseFloat(limpo) || 0;
+}
+
+// Pega o valor de uma linha do CSV tentando vários nomes de coluna
+function pegarValor(linha, ...nomes) {
+  for (const nome of nomes) {
+    if (linha[nome] !== undefined && linha[nome] !== "") return linha[nome];
+  }
+  return "";
 }
 
 // Desenha um gráfico genérico
@@ -153,29 +163,32 @@ async function carregarGraficos() {
 
     // Eixo X = meses formatados
     const labels = linhas.map(l => {
-      const [ano, mes] = (l.mes || "").split("-");
+      const mesRaw = pegarValor(l, "mes", "Mês");
+      if (!mesRaw) return "";
+      const [ano, mes] = mesRaw.split("-");
       const nomes = ["jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"];
-      return `${nomes[parseInt(mes)-1]}/${ano.slice(2)}`;
+      const idx = parseInt(mes) - 1;
+      return (nomes[idx] || "?") + "/" + ano.slice(2);
     });
 
     // Gráfico 1 — Glosa IPASGO (%)
     criarGrafico("g1", "line", labels,
-      linhas.map(l => numeroBR(l.glosa_ipasgo_pct)),
+      linhas.map(l => numeroBR(pegarValor(l, "glosa_ipasgo_pct", "Glosa Ipasgo Pct"))),
       CORES.alerta, CORES.alertaClaro, "%");
 
     // Gráfico 2 — Glosa Total Identificada (R$)
     criarGrafico("g2", "bar", labels,
-      linhas.map(l => numeroBR(l.glosa_total_identificada)),
+      linhas.map(l => numeroBR(pegarValor(l, "glosa_total_identificada", "Glosa Total Identificada"))),
       CORES.vinho, CORES.vinhoClaro);
 
     // Gráfico 3 — Contas Paradas (quantidade)
     criarGrafico("g3", "line", labels,
-      linhas.map(l => numeroBR(l.contas_paradas_qtd)),
+      linhas.map(l => numeroBR(pegarValor(l, "contas_paradas_qtd", "Contas Paradas Qtd"))),
       CORES.info, CORES.infoClaro);
 
     // Gráfico 4 — Valor Represado (R$)
     criarGrafico("g4", "bar", labels,
-      linhas.map(l => numeroBR(l.valor_represado)),
+      linhas.map(l => numeroBR(pegarValor(l, "valor_represado", "Valor Represado"))),
       CORES.sucesso, CORES.sucessoClaro);
 
     console.log("Gráficos criados com sucesso.");
@@ -186,6 +199,5 @@ async function carregarGraficos() {
 
 // Dispara a criação dos gráficos depois dos itens
 document.addEventListener("DOMContentLoaded", () => {
-  // Espera um pouquinho pra garantir que o Chart.js já carregou
-  setTimeout(carregarGraficos, 500);
+  setTimeout(carregarGraficos, 800);
 });
